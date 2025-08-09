@@ -12,8 +12,7 @@ import {
   FormControl,
   InputLabel,
   Select,
-  MenuItem,
-  Slider
+  MenuItem
 } from '@mui/material';
 import {
   LocationOn as LocationIcon,
@@ -68,7 +67,7 @@ const LACrimeHotspotMap: React.FC = () => {
 
   useEffect(() => {
     loadHotspotData();
-  }, [filters]);
+  }, [filters]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const loadHotspotData = async () => {
     try {

@@ -1,5 +1,5 @@
 // API Configuration
-export const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000';
+export const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://forensic-analysis-backend.onrender.com';
 
 // API endpoints
 export const API_ENDPOINTS = {

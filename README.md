@@ -155,10 +155,26 @@ npm run build
 This creates an optimized production build in the `build/` folder.
 
 ### Deployment Options
+
+#### Vercel (Recommended)
+1. Install Vercel CLI: `npm install -g vercel`
+2. Run `vercel` in the project directory
+3. Follow the prompts to deploy
+4. Set environment variables in Vercel dashboard:
+   - `REACT_APP_API_BASE_URL`: Your backend API URL
+
+#### Other Options
 - **Netlify**: Connect your GitHub repository for automatic deployments
-- **Vercel**: Deploy with zero configuration
 - **AWS S3**: Static website hosting
 - **GitHub Pages**: Free hosting for public repositories
+
+#### Environment Variables for Production
+Create these environment variables in your deployment platform:
+```
+REACT_APP_API_BASE_URL=https://forensic-analysis-backend.onrender.com
+```
+
+**Note**: The backend API is already deployed and running at https://forensic-analysis-backend.onrender.com/
 
 ## 🧪 Testing
 

@@ -21,7 +21,6 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
-  Grid,
   Divider
 } from '@mui/material';
 import {
@@ -36,30 +35,18 @@ import {
   Error as ErrorIcon,
   ExpandMore as ExpandMoreIcon,
   Timeline as TimelineIcon,
-  Assessment as AssessmentIcon,
-  Speed as SpeedIcon,
-  Fingerprint as FingerprintIcon
+  Assessment as AssessmentIcon
 } from '@mui/icons-material';
 import { useDropzone } from 'react-dropzone';
 import { API_BASE_URL, API_ENDPOINTS } from '../../config/api';
 import { 
-  BarChart,
-  Bar,
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
   Tooltip as RechartsTooltip, 
   ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
   RadarChart,
   PolarGrid,
   PolarAngleAxis,
   PolarRadiusAxis,
-  Radar,
-  LineChart,
-  Line
+  Radar
 } from 'recharts';
 
 interface TabPanelProps {
@@ -244,8 +231,10 @@ const ForensicAnalyticsDashboard: React.FC<{
 const EvidenceAnalysis: React.FC = () => {
   const [tabValue, setTabValue] = useState(0);
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
-  const [results, setResults] = useState<any>(null);
-  const [loading, setLoading] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_results, setResults] = useState<any>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_loading, setLoading] = useState(false);
   const [previewDialog, setPreviewDialog] = useState<{ open: boolean; file?: UploadedFile }>({ open: false });
   const [analysisHistory, setAnalysisHistory] = useState<any[]>([]);
   const [systemMetrics, setSystemMetrics] = useState<any>(null);

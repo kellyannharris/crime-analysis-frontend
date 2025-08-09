@@ -25,8 +25,6 @@ import {
   InputLabel,
   Select,
   MenuItem,
-
-  Grid,
   Avatar,
   List,
   ListItem,
@@ -59,7 +57,7 @@ import {
   ExpandMore as ExpandMoreIcon,
   Refresh as RefreshIcon
 } from '@mui/icons-material';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, Legend } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
 interface TabPanelProps {
   children?: React.ReactNode;
