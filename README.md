@@ -79,12 +79,14 @@ yarn install
 
 ### 3. Environment Setup
 
-Create a `.env.local` file in the root directory:
+Create a `.env.local` file in the root directory (or copy the existing one):
 
 ```env
 REACT_APP_API_BASE_URL=http://localhost:8000
 REACT_APP_MAP_API_KEY=your_map_api_key_here
 ```
+
+**Note**: The `REACT_APP_API_BASE_URL` environment variable is required and should point to your backend API server. The default value points to localhost:8000.
 
 ### 4. Start the Development Server
 

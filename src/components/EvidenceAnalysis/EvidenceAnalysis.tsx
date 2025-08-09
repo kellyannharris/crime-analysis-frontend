@@ -41,6 +41,7 @@ import {
   Fingerprint as FingerprintIcon
 } from '@mui/icons-material';
 import { useDropzone } from 'react-dropzone';
+import { API_BASE_URL, API_ENDPOINTS } from '../../config/api';
 import { 
   BarChart,
   Bar,
@@ -257,7 +258,7 @@ const EvidenceAnalysis: React.FC = () => {
   useEffect(() => {
     const loadSystemMetrics = async () => {
       try {
-        const response = await fetch('http://localhost:8000/dashboard/statistics');
+        const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.dashboard.statistics}`);
         if (response.ok) {
           const data = await response.json();
           setSystemMetrics(data);
@@ -314,7 +315,7 @@ const EvidenceAnalysis: React.FC = () => {
         );
       }, 500);
 
-      const response = await fetch(`http://localhost:8000/api/unstructured/${analysisType}/analyze`, {
+      const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.evidence.analyze(analysisType)}`, {
         method: 'POST',
         body: formData,
       });

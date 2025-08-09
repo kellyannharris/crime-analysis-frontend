@@ -21,9 +21,7 @@ import {
 } from '@mui/icons-material';
 import axios from 'axios';
 import LACrimeHotspotMap from '../CrimeMap/LACrimeHotspotMap';
-
-// API Configuration
-const API_BASE_URL = 'http://localhost:8000';
+import { API_BASE_URL, API_ENDPOINTS } from '../../config/api';
 
 interface SystemStatus {
   status: string;
@@ -81,11 +79,11 @@ const SimpleDashboard: React.FC = () => {
       setError(null);
 
       // Load system health
-      const healthResponse = await axios.get(`${API_BASE_URL}/health`);
+      const healthResponse = await axios.get(`${API_BASE_URL}${API_ENDPOINTS.health}`);
       setSystemStatus(healthResponse.data);
 
       // Load dashboard statistics
-      const statsResponse = await axios.get(`${API_BASE_URL}/dashboard/statistics`);
+      const statsResponse = await axios.get(`${API_BASE_URL}${API_ENDPOINTS.dashboard.statistics}`);
       setDashboardStats(statsResponse.data);
 
       setLastRefresh(new Date());

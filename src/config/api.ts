@@ -1,0 +1,20 @@
+// API Configuration
+export const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000';
+
+// API endpoints
+export const API_ENDPOINTS = {
+  health: '/health',
+  dashboard: {
+    statistics: '/dashboard/statistics'
+  },
+  evidence: {
+    analyze: (type: string) => `/api/unstructured/${type}/analyze`
+  },
+  crime: {
+    predictRate: '/predict/crime-rate',
+    classifyTypes: '/classify/crime-types',
+    predictSpatial: '/predict/spatial',
+    analyzeNetwork: '/analyze/criminal-network',
+    analyzeTemporalPatterns: '/analyze/temporal-patterns'
+  }
+}; 
