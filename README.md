@@ -1,46 +1,245 @@
-# Getting Started with Create React App
+# Crime Analysis Web Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A comprehensive web-based platform for crime data analysis and forensic evidence processing, developed as a capstone project by Kelly-Ann Harris. This application provides law enforcement and forensic analysts with advanced tools for crime pattern analysis, evidence processing, and predictive modeling.
 
-## Available Scripts
+## 🚀 Features
 
-In the project directory, you can run:
+### Dashboard & Analytics
+- **Real-time Crime Statistics**: Live monitoring of crime analytics with accuracy rates and prediction confidence
+- **System Health Monitoring**: Track model performance and system status
+- **Interactive Hotspot Mapping**: Visual crime hotspot identification using Los Angeles crime data
+- **Comprehensive Metrics**: Track cases analyzed, evidence processed, and model performance
 
-### `npm start`
+### Evidence Analysis Suite
+- **Blood Splatter Analysis**: Advanced pattern recognition for blood evidence
+- **Ballistics Analysis**: Cartridge case examination and matching
+- **Handwriting Analysis**: Document and signature verification
+- **Interactive Image Processing**: Upload, crop, and analyze evidence images
+- **Detailed Reporting**: Generate comprehensive analysis reports
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Crime Analysis Tools
+- **Hotspot Mapping**: Interactive maps showing crime concentration areas
+- **Temporal Pattern Analysis**: Time-based crime trend identification
+- **Network Analysis**: Criminal network visualization and relationship mapping
+- **Predictive Modeling**: Advanced algorithms for crime prediction
+- **Real-time Analytics**: Live crime data processing and analysis
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Advanced Capabilities
+- **Machine Learning Integration**: Custom-trained models for evidence analysis
+- **Interactive Visualizations**: Charts, graphs, and maps for data representation
+- **Responsive Design**: Modern, mobile-friendly interface
+- **Real-time Updates**: Live data synchronization and notifications
 
-### `npm test`
+## 🛠️ Technology Stack
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Frontend
+- **React 19.1.0** - Modern React with latest features
+- **TypeScript** - Type-safe development
+- **Material-UI (MUI)** - Professional component library
+- **React Router** - Client-side routing
+- **Leaflet & React-Leaflet** - Interactive mapping
+- **Recharts & Plotly.js** - Data visualization
+- **Axios** - HTTP client for API communication
 
-### `npm run build`
+### UI/UX Libraries
+- **@mui/x-charts** - Advanced charting components
+- **@mui/x-data-grid** - Data table management
+- **react-dropzone** - File upload handling
+- **react-image-crop** - Image manipulation tools
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 📋 Prerequisites
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Before running this application, ensure you have:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- **Node.js** (version 16 or higher)
+- **npm** (version 7 or higher) or **yarn**
+- **Git** for version control
+- A modern web browser (Chrome, Firefox, Safari, Edge)
 
-### `npm run eject`
+## 🚀 Getting Started
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### 1. Clone the Repository
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+git clone https://github.com/your-username/crime-analysis-frontend.git
+cd crime-analysis-frontend
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### 2. Install Dependencies
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```bash
+npm install
+```
 
-## Learn More
+or with yarn:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```bash
+yarn install
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 3. Environment Setup
+
+Create a `.env.local` file in the root directory:
+
+```env
+REACT_APP_API_BASE_URL=http://localhost:8000
+REACT_APP_MAP_API_KEY=your_map_api_key_here
+```
+
+### 4. Start the Development Server
+
+```bash
+npm start
+```
+
+The application will be available at [http://localhost:3000](http://localhost:3000)
+
+## 📁 Project Structure
+
+```
+src/
+├── components/
+│   ├── Dashboard/           # Main dashboard with analytics
+│   │   └── SimpleDashboard.tsx
+│   ├── EvidenceAnalysis/    # Evidence processing tools
+│   │   └── EvidenceAnalysis.tsx
+│   ├── CrimeAnalysis/       # Crime pattern analysis
+│   │   └── CrimeAnalysis.tsx
+│   ├── CrimeMap/            # Interactive mapping
+│   │   └── LACrimeHotspotMap.tsx
+│   ├── Reports/             # Report generation
+│   │   └── Reports.tsx
+│   └── Layout/              # Navigation and layout
+│       ├── Header.tsx
+│       └── Sidebar.tsx
+├── App.tsx                  # Main application component
+├── index.tsx               # Application entry point
+└── App.css                 # Global styles
+```
+
+## 🎯 Available Scripts
+
+### Development
+- `npm start` - Runs the app in development mode
+- `npm test` - Launches the test runner
+- `npm run build` - Builds the app for production
+- `npm run eject` - Ejects from Create React App (⚠️ irreversible)
+
+### Testing
+- `npm test` - Run all tests
+- `npm test -- --coverage` - Run tests with coverage report
+
+## 🔧 Configuration
+
+### API Integration
+The application expects a backend API running on `http://localhost:8000`. Key endpoints include:
+
+- `/api/system/status` - System health and model status
+- `/api/dashboard/stats` - Dashboard statistics
+- `/api/evidence/analyze` - Evidence analysis endpoints
+- `/api/crime/analyze` - Crime analysis endpoints
+
+### Environment Variables
+- `REACT_APP_API_BASE_URL` - Backend API URL
+- `REACT_APP_MAP_API_KEY` - Map service API key (if required)
+
+## 🚀 Deployment
+
+### Production Build
+```bash
+npm run build
+```
+
+This creates an optimized production build in the `build/` folder.
+
+### Deployment Options
+- **Netlify**: Connect your GitHub repository for automatic deployments
+- **Vercel**: Deploy with zero configuration
+- **AWS S3**: Static website hosting
+- **GitHub Pages**: Free hosting for public repositories
+
+## 🧪 Testing
+
+The application includes comprehensive testing setup:
+
+```bash
+# Run all tests
+npm test
+
+# Run tests with coverage
+npm test -- --coverage
+
+# Run tests in watch mode
+npm test -- --watch
+```
+
+## 🎨 Customization
+
+### Theme Configuration
+The application uses Material-UI theming. Customize colors and typography in `src/App.tsx`:
+
+```typescript
+const theme = createTheme({
+  palette: {
+    primary: { main: '#2563eb' },
+    secondary: { main: '#dc2626' },
+    // ... customize colors
+  },
+  typography: {
+    fontFamily: 'Arial, sans-serif',
+    // ... customize typography
+  }
+});
+```
+
+### Adding New Features
+1. Create new components in the appropriate directory
+2. Add routes in `App.tsx`
+3. Update navigation in `Sidebar.tsx`
+4. Implement API integration with axios
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📝 License
+
+This project is part of a capstone project by Kelly-Ann Harris. Please contact the author for usage permissions.
+
+## 👤 Author
+
+**Kelly-Ann Harris**
+- Capstone Project - Crime Analysis Application
+- Student Project focusing on forensic science and crime data analysis
+
+## 🔗 Related Projects
+
+This frontend application is designed to work with a corresponding backend API that provides:
+- Machine learning models for evidence analysis
+- Crime data processing algorithms
+- Database management for case files
+- Real-time analytics processing
+
+## 📞 Support
+
+For questions or support regarding this application:
+1. Check the documentation in this README
+2. Review the component-level comments in the source code
+3. Contact the project author
+
+## 🚀 Future Enhancements
+
+- Advanced machine learning model integration
+- Real-time collaboration features
+- Mobile application development
+- Enhanced security and user authentication
+- Integration with law enforcement databases
+- Advanced reporting and export capabilities
+
+---
+
+*This application represents a comprehensive approach to modern crime analysis, combining cutting-edge web technologies with forensic science principles to create a powerful tool for law enforcement professionals.*
