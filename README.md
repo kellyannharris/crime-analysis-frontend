@@ -172,9 +172,13 @@ This creates an optimized production build in the `build/` folder.
 Create these environment variables in your deployment platform:
 ```
 REACT_APP_API_BASE_URL=https://forensic-analysis-backend.onrender.com
+DATABASE_URL=postgresql://neondb_owner:npg_yji3hvzQLW4w@ep-floral-mode-aev0idze-pooler.c-2.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require
 ```
 
-**Note**: The backend API is already deployed and running at https://forensic-analysis-backend.onrender.com/
+**Backend Configuration**:
+- API: https://forensic-analysis-backend.onrender.com/
+- Database: Neon PostgreSQL (configured for crime data persistence)
+- Environment: Production-ready with secure database connection
 
 ## 🧪 Testing
 
