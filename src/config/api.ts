@@ -10,7 +10,9 @@ const getApiBaseUrl = (): string => {
     nodeEnv: process.env.NODE_ENV
   });
   
-  return envUrl || fallbackUrl;
+  // Remove trailing slash to prevent double slashes
+  const baseUrl = envUrl || fallbackUrl;
+  return baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
 };
 
 export const API_BASE_URL = getApiBaseUrl();

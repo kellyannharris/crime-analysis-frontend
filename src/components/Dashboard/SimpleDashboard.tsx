@@ -80,7 +80,9 @@ const SimpleDashboard: React.FC = () => {
       setError(null);
 
       // Load system health
-      const healthResponse = await axios.get(`${API_BASE_URL}/${API_ENDPOINTS.health}`, {
+      const healthUrl = `${API_BASE_URL}/${API_ENDPOINTS.health}`;
+      console.log('🔍 Debug: Making request to:', healthUrl);
+      const healthResponse = await axios.get(healthUrl, {
         headers: {
           'Content-Type': 'application/json',
         },
