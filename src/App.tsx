@@ -35,6 +35,9 @@ const theme = createTheme({
 });
 
 function App() {
+  // Force cache clear - Version: 2025-08-10-17:40
+  console.log('🚀 App loaded - Cache clear version: 2025-08-10-17:40');
+  
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline /> {/* This resets CSS for consistency */}
