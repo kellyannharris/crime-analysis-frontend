@@ -4,9 +4,8 @@ export const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://foren
 // API endpoints
 export const API_ENDPOINTS = {
   health: '/health',
-  dashboard: {
-    statistics: '/dashboard/statistics'
-  },
+  models: '/models/info',
+  docs: '/docs',
   evidence: {
     analyze: (type: string) => `/api/unstructured/${type}/analyze`
   },

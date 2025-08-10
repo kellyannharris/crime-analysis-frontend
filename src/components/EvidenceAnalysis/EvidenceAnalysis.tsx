@@ -247,7 +247,7 @@ const EvidenceAnalysis: React.FC = () => {
   useEffect(() => {
     const loadSystemMetrics = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.dashboard.statistics}`);
+        const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.health}`);
         if (response.ok) {
           const data = await response.json();
           setSystemMetrics(data);
