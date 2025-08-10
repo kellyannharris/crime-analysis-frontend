@@ -1,5 +1,19 @@
 // API Configuration
-export const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://forensic-analysis-backend.onrender.com';
+// Ensure we have a fallback URL that works
+const getApiBaseUrl = (): string => {
+  const envUrl = process.env.REACT_APP_API_BASE_URL;
+  const fallbackUrl = 'https://forensic-analysis-backend.onrender.com';
+  
+  console.log('Environment check:', {
+    envUrl,
+    fallbackUrl,
+    nodeEnv: process.env.NODE_ENV
+  });
+  
+  return envUrl || fallbackUrl;
+};
+
+export const API_BASE_URL = getApiBaseUrl();
 
 // API endpoints
 export const API_ENDPOINTS = {

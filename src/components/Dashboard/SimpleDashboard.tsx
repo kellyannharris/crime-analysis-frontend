@@ -22,6 +22,7 @@ import {
 import axios from 'axios';
 import LACrimeHotspotMap from '../CrimeMap/LACrimeHotspotMap';
 import { API_BASE_URL, API_ENDPOINTS } from '../../config/api';
+import EnvironmentDebug from '../Debug/EnvironmentDebug';
 
 interface SystemStatus {
   status: string;
@@ -165,6 +166,12 @@ const SimpleDashboard: React.FC = () => {
     } catch (err: any) {
       console.error('Dashboard data loading error:', err);
       const errorMessage = err.response?.data?.message || err.message || 'Unknown error';
+      console.error('API Connection Error:', {
+        message: errorMessage,
+        apiUrl: API_BASE_URL,
+        envVar: process.env.REACT_APP_API_BASE_URL,
+        error: err
+      });
       setError(`Failed to connect to analysis services: ${errorMessage}. API URL: ${API_BASE_URL}`);
     } finally {
       setLoading(false);
@@ -226,6 +233,7 @@ const SimpleDashboard: React.FC = () => {
   if (error) {
     return (
       <Box>
+        <EnvironmentDebug />
         <Typography variant="h4" sx={{ mb: 3 }}>
           Integrated Crime & Forensic Analysis Dashboard
         </Typography>
