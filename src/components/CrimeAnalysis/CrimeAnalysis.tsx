@@ -202,7 +202,7 @@ const CrimeAnalysis: React.FC = () => {
       let response;
       switch (analysisType) {
         case 'prediction':
-          response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.crime.predictRate}`, {
+          response = await fetch(`${API_BASE_URL}/${API_ENDPOINTS.crime.predictRate}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -223,7 +223,7 @@ const CrimeAnalysis: React.FC = () => {
           break;
 
         case 'classification':
-          response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.crime.classifyTypes}`, {
+          response = await fetch(`${API_BASE_URL}/${API_ENDPOINTS.crime.classifyTypes}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -243,7 +243,7 @@ const CrimeAnalysis: React.FC = () => {
           break;
 
         case 'spatial':
-          response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.crime.predictSpatial}`, {
+          response = await fetch(`${API_BASE_URL}/${API_ENDPOINTS.crime.predictSpatial}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -259,7 +259,7 @@ const CrimeAnalysis: React.FC = () => {
           break;
 
         case 'network':
-          response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.crime.analyzeNetwork}`, {
+          response = await fetch(`${API_BASE_URL}/${API_ENDPOINTS.crime.analyzeNetwork}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -279,7 +279,7 @@ const CrimeAnalysis: React.FC = () => {
           break;
 
         case 'temporal':
-          response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.crime.analyzeTemporalPatterns}`, {
+          response = await fetch(`${API_BASE_URL}/${API_ENDPOINTS.crime.analyzeTemporalPatterns}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

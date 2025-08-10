@@ -17,17 +17,17 @@ export const API_BASE_URL = getApiBaseUrl();
 
 // API endpoints
 export const API_ENDPOINTS = {
-  health: '/health',
-  models: '/models/info',
-  docs: '/docs',
+  health: 'health',
+  models: 'models/info',
+  docs: 'docs',
   evidence: {
-    analyze: (type: string) => `/api/unstructured/${type}/analyze`
+    analyze: (type: string) => `api/unstructured/${type}/analyze`
   },
   crime: {
-    predictRate: '/predict/crime-rate',
-    classifyTypes: '/classify/crime-types',
-    predictSpatial: '/predict/spatial',
-    analyzeNetwork: '/analyze/criminal-network',
-    analyzeTemporalPatterns: '/analyze/temporal-patterns'
+    predictRate: 'predict/crime-rate',
+    classifyTypes: 'classify/crime-types',
+    predictSpatial: 'predict/spatial',
+    analyzeNetwork: 'analyze/criminal-network',
+    analyzeTemporalPatterns: 'analyze/temporal-patterns'
   }
 }; 

@@ -80,7 +80,7 @@ const SimpleDashboard: React.FC = () => {
       setError(null);
 
       // Load system health
-      const healthResponse = await axios.get(`${API_BASE_URL}${API_ENDPOINTS.health}`, {
+      const healthResponse = await axios.get(`${API_BASE_URL}/${API_ENDPOINTS.health}`, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -91,7 +91,7 @@ const SimpleDashboard: React.FC = () => {
       // Try to load models info (fallback for statistics)
       try {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const modelsResponse = await axios.get(`${API_BASE_URL}${API_ENDPOINTS.models}`, {
+        const modelsResponse = await axios.get(`${API_BASE_URL}/${API_ENDPOINTS.models}`, {
           headers: {
             'Content-Type': 'application/json',
           },
