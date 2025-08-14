@@ -255,6 +255,20 @@ const SimpleDashboard: React.FC = () => {
     );
   }
 
+  // Add null check here - this is the key fix
+  if (!dashboardStats) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="60vh">
+        <Box textAlign="center">
+          <CircularProgress size={60} />
+          <Typography variant="h6" sx={{ mt: 2 }}>
+            Loading Dashboard Data...
+          </Typography>
+        </Box>
+      </Box>
+    );
+  }
+
   return (
     <Box>
       {/* Header */}
@@ -296,51 +310,49 @@ const SimpleDashboard: React.FC = () => {
       </Card>
 
       {/* Key Metrics */}
-      {dashboardStats && (
-        <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', mb: 3 }}>
-          <Card sx={{ minWidth: 200, background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
-            <CardContent sx={{ color: 'white', textAlign: 'center' }}>
-              <TrendingUpIcon sx={{ fontSize: 40, mb: 1 }} />
-              <Typography variant="h4">{formatNumber(dashboardStats.crime_analytics.total_cases_analyzed)}</Typography>
-              <Typography variant="body2">Cases Analyzed</Typography>
-              <Typography variant="caption">
-                {formatPercentage(dashboardStats.crime_analytics.accuracy_rate)} accuracy
-              </Typography>
-            </CardContent>
-          </Card>
+      <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', mb: 3 }}>
+        <Card sx={{ minWidth: 200, background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
+          <CardContent sx={{ color: 'white', textAlign: 'center' }}>
+            <TrendingUpIcon sx={{ fontSize: 40, mb: 1 }} />
+            <Typography variant="h4">{formatNumber(dashboardStats.crime_analytics.total_cases_analyzed)}</Typography>
+            <Typography variant="body2">Cases Analyzed</Typography>
+            <Typography variant="caption">
+              {formatPercentage(dashboardStats.crime_analytics.accuracy_rate)} accuracy
+            </Typography>
+          </CardContent>
+        </Card>
 
-          <Card sx={{ minWidth: 200, background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)' }}>
-            <CardContent sx={{ color: 'white', textAlign: 'center' }}>
-              <ScienceIcon sx={{ fontSize: 40, mb: 1 }} />
-              <Typography variant="h4">{formatNumber(dashboardStats.forensic_analysis.total_evidence_processed)}</Typography>
-              <Typography variant="body2">Evidence Processed</Typography>
-              <Typography variant="caption">
-                {formatPercentage(dashboardStats.forensic_analysis.match_rate)} match rate
-              </Typography>
-            </CardContent>
-          </Card>
+        <Card sx={{ minWidth: 200, background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)' }}>
+          <CardContent sx={{ color: 'white', textAlign: 'center' }}>
+            <ScienceIcon sx={{ fontSize: 40, mb: 1 }} />
+            <Typography variant="h4">{formatNumber(dashboardStats.forensic_analysis.total_evidence_processed)}</Typography>
+            <Typography variant="body2">Evidence Processed</Typography>
+            <Typography variant="caption">
+              {formatPercentage(dashboardStats.forensic_analysis.match_rate)} match rate
+            </Typography>
+          </CardContent>
+        </Card>
 
-          <Card sx={{ minWidth: 200, background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)' }}>
-            <CardContent sx={{ color: 'white', textAlign: 'center' }}>
-              <Typography variant="h4">{dashboardStats.crime_analytics.hotspots_identified}</Typography>
-              <Typography variant="body2">Crime Hotspots</Typography>
-              <Typography variant="caption">
-                {dashboardStats.crime_analytics.network_nodes} network nodes
-              </Typography>
-            </CardContent>
-          </Card>
+        <Card sx={{ minWidth: 200, background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)' }}>
+          <CardContent sx={{ color: 'white', textAlign: 'center' }}>
+            <Typography variant="h4">{dashboardStats.crime_analytics.hotspots_identified}</Typography>
+            <Typography variant="body2">Crime Hotspots</Typography>
+            <Typography variant="caption">
+              {dashboardStats.crime_analytics.network_nodes} network nodes
+            </Typography>
+          </CardContent>
+        </Card>
 
-          <Card sx={{ minWidth: 200, background: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)' }}>
-            <CardContent sx={{ color: 'white', textAlign: 'center' }}>
-              <Typography variant="h4">{dashboardStats.crime_analytics.models_active}</Typography>
-              <Typography variant="body2">Active Models</Typography>
-              <Typography variant="caption">
-                {formatPercentage(dashboardStats.crime_analytics.prediction_confidence * 100)} confidence
-              </Typography>
-            </CardContent>
-          </Card>
-        </Box>
-      )}
+        <Card sx={{ minWidth: 200, background: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)' }}>
+          <CardContent sx={{ color: 'white', textAlign: 'center' }}>
+            <Typography variant="h4">{dashboardStats.crime_analytics.models_active}</Typography>
+            <Typography variant="body2">Active Models</Typography>
+            <Typography variant="caption">
+              {formatPercentage(dashboardStats.crime_analytics.prediction_confidence)} confidence
+            </Typography>
+          </CardContent>
+        </Card>
+      </Box>
 
       {/* Main Feature: LA Crime Hotspot Map */}
       <Card sx={{ mb: 3 }}>
@@ -381,11 +393,9 @@ const SimpleDashboard: React.FC = () => {
               </Typography>
             </Box>
 
-            {dashboardStats && (
-              <Typography variant="caption" color="text.secondary">
-                Based on {formatNumber(dashboardStats.crime_analytics.total_cases_analyzed)} analyzed cases
-              </Typography>
-            )}
+            <Typography variant="caption" color="text.secondary">
+              Based on {formatNumber(dashboardStats.crime_analytics.total_cases_analyzed)} analyzed cases
+            </Typography>
           </CardContent>
         </Card>
 
@@ -407,28 +417,26 @@ const SimpleDashboard: React.FC = () => {
               </Typography>
             </Box>
 
-            {dashboardStats && (
-              <Box sx={{ display: 'flex', gap: 2 }}>
-                <Box textAlign="center">
-                  <Typography variant="h6" color="secondary.main">
-                    {dashboardStats.forensic_analysis.bloodsplatter_cases}
-                  </Typography>
-                  <Typography variant="caption">Blood</Typography>
-                </Box>
-                <Box textAlign="center">
-                  <Typography variant="h6" color="secondary.main">
-                    {dashboardStats.forensic_analysis.cartridge_cases}
-                  </Typography>
-                  <Typography variant="caption">Cartridge</Typography>
-                </Box>
-                <Box textAlign="center">
-                  <Typography variant="h6" color="secondary.main">
-                    {dashboardStats.forensic_analysis.handwriting_samples}
-                  </Typography>
-                  <Typography variant="caption">Handwriting</Typography>
-                </Box>
+            <Box sx={{ display: 'flex', gap: 2 }}>
+              <Box textAlign="center">
+                <Typography variant="h6" color="secondary.main">
+                  {dashboardStats.forensic_analysis.bloodsplatter_cases}
+                </Typography>
+                <Typography variant="caption">Blood</Typography>
               </Box>
-            )}
+              <Box textAlign="center">
+                <Typography variant="h6" color="secondary.main">
+                  {dashboardStats.forensic_analysis.cartridge_cases}
+                </Typography>
+                <Typography variant="caption">Cartridge</Typography>
+              </Box>
+              <Box textAlign="center">
+                <Typography variant="h6" color="secondary.main">
+                  {dashboardStats.forensic_analysis.handwriting_samples}
+                </Typography>
+                <Typography variant="caption">Handwriting</Typography>
+              </Box>
+            </Box>
           </CardContent>
         </Card>
       </Box>
@@ -471,4 +479,4 @@ const SimpleDashboard: React.FC = () => {
   );
 };
 
-export default SimpleDashboard; 
+export default SimpleDashboard;
