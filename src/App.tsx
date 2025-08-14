@@ -6,6 +6,7 @@ import SimpleDashboard from './components/Dashboard/SimpleDashboard';
 import EvidenceAnalysis from './components/EvidenceAnalysis/EvidenceAnalysis';
 import CrimeAnalysis from './components/CrimeAnalysis/CrimeAnalysis';
 import Reports from './components/Reports/Reports';
+
 import Sidebar from './components/Layout/Sidebar';
 import Header from './components/Layout/Header';
 
@@ -65,6 +66,7 @@ function App() {
                 <Route path="/evidence" element={<EvidenceAnalysis />} />
                 <Route path="/crime-analysis" element={<CrimeAnalysis />} />
                 <Route path="/reports" element={<Reports />} />
+
               </Routes>
             </Box>
           </Box>
