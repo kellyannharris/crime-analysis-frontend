@@ -1,20 +1,31 @@
 {
+  "version": 2,
+  "framework": "create-react-app",
   "buildCommand": "npm run build",
   "outputDirectory": "build",
+  "installCommand": "npm install",
   "devCommand": "npm start",
+  "functions": {},
   "env": {
     "REACT_APP_API_BASE_URL": "@react_app_api_base_url",
-    "DATABASE_URL": "@database_url",
     "VERCEL_FORCE_NO_BUILD_CACHE": "1"
   },
   "build": {
     "env": {
       "REACT_APP_API_BASE_URL": "@react_app_api_base_url",
-      "DATABASE_URL": "@database_url",
       "VERCEL_FORCE_NO_BUILD_CACHE": "1"
     }
   },
   "headers": [
+    {
+      "source": "/static/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
     {
       "source": "/(.*)",
       "headers": [
@@ -29,26 +40,14 @@
         {
           "key": "X-XSS-Protection",
           "value": "1; mode=block"
-        },
-        {
-          "key": "Cache-Control",
-          "value": "no-cache, no-store, must-revalidate"
-        },
-        {
-          "key": "Pragma",
-          "value": "no-cache"
-        },
-        {
-          "key": "Expires",
-          "value": "0"
         }
       ]
     }
   ],
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/((?!api/.*).*)",
       "destination": "/index.html"
     }
   ]
-} 
+}
