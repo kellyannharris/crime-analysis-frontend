@@ -5,7 +5,6 @@
   "outputDirectory": "build",
   "installCommand": "npm install",
   "devCommand": "npm start",
-  "functions": {},
   "env": {
     "REACT_APP_API_BASE_URL": "@react_app_api_base_url",
     "VERCEL_FORCE_NO_BUILD_CACHE": "1"
