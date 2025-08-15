@@ -19,7 +19,7 @@ import {
   CheckCircle as CheckCircleIcon,
   Error as ErrorIcon
 } from '@mui/icons-material';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import LACrimeHotspotMap from '../CrimeMap/LACrimeHotspotMap';
 import { API_BASE_URL, API_ENDPOINTS } from '../../config/api';
 import EnvironmentDebug from '../Debug/EnvironmentDebug';
@@ -59,6 +59,14 @@ interface DashboardStats {
   }>;
 }
 
+interface ApiError {
+  message?: string;
+  status?: number;
+  data?: {
+    message?: string;
+  };
+}
+
 const SimpleDashboard: React.FC = () => {
   const [systemStatus, setSystemStatus] = useState<SystemStatus | null>(null);
   const [dashboardStats, setDashboardStats] = useState<DashboardStats | null>(null);
@@ -74,7 +82,67 @@ const SimpleDashboard: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const loadDashboardData = async () => {
+  const createFallbackStats = (): DashboardStats => ({
+    crime_analytics: {
+      total_cases_analyzed: 0,
+      accuracy_rate: 0,
+      models_active: 0,
+      prediction_confidence: 0,
+      hotspots_identified: 0,
+      network_nodes: 0,
+      temporal_patterns: 0
+    },
+    forensic_analysis: {
+      bloodsplatter_cases: 0,
+      cartridge_cases: 0,
+      handwriting_samples: 0,
+      total_evidence_processed: 0,
+      match_rate: 0,
+      average_processing_time: 0
+    },
+    recent_activity: []
+  });
+
+  const createMockStats = (healthData?: SystemStatus): DashboardStats => ({
+    crime_analytics: {
+      total_cases_analyzed: 1247,
+      accuracy_rate: 94.2,
+      models_active: healthData ? 
+        Object.values(healthData.models_loaded || {}).filter(Boolean).length : 3,
+      prediction_confidence: 87.5,
+      hotspots_identified: 23,
+      network_nodes: 156,
+      temporal_patterns: 8
+    },
+    forensic_analysis: {
+      bloodsplatter_cases: 89,
+      cartridge_cases: 134,
+      handwriting_samples: 67,
+      total_evidence_processed: 290,
+      match_rate: 82.1,
+      average_processing_time: 3.4
+    },
+    recent_activity: [
+      {
+        id: '1',
+        type: 'Blood Analysis',
+        description: 'Pattern analysis completed',
+        timestamp: new Date().toISOString(),
+        result: 'Match found',
+        status: 'completed'
+      },
+      {
+        id: '2',
+        type: 'Crime Prediction',
+        description: 'Hotspot analysis for downtown area',
+        timestamp: new Date(Date.now() - 3600000).toISOString(),
+        result: 'High risk area identified',
+        status: 'completed'
+      }
+    ]
+  });
+
+  const loadDashboardData = async (): Promise<void> => {
     try {
       setLoading(true);
       setError(null);
@@ -90,7 +158,7 @@ const SimpleDashboard: React.FC = () => {
       const healthUrl = `${API_BASE_URL}/${API_ENDPOINTS.health}`;
       console.log('🔍 Making health request to:', healthUrl);
       
-      const healthResponse = await axios.get(healthUrl, {
+      const healthResponse = await axios.get<SystemStatus>(healthUrl, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -100,77 +168,17 @@ const SimpleDashboard: React.FC = () => {
       console.log('✅ Health response received:', healthResponse.data);
       setSystemStatus(healthResponse.data);
 
-      // Create dashboard stats from available system data
-      // Since backend doesn't have dashboard/statistics endpoint yet,
-      // we'll use the health status to create mock realistic data
-      const healthData = healthResponse.data;
-      const modelsCount = Object.values(healthData.models_loaded || {}).filter(Boolean).length;
-      
-      const mockStats: DashboardStats = {
-        crime_analytics: {
-          total_cases_analyzed: 1247,
-          accuracy_rate: 94.2,
-          models_active: modelsCount,
-          prediction_confidence: 87.5,
-          hotspots_identified: 23,
-          network_nodes: 156,
-          temporal_patterns: 8
-        },
-        forensic_analysis: {
-          bloodsplatter_cases: 89,
-          cartridge_cases: 134,
-          handwriting_samples: 67,
-          total_evidence_processed: 290,
-          match_rate: 82.1,
-          average_processing_time: 3.4
-        },
-        recent_activity: [
-          {
-            id: '1',
-            type: 'Blood Analysis',
-            description: 'Pattern analysis completed',
-            timestamp: new Date().toISOString(),
-            result: 'Match found',
-            status: 'completed'
-          },
-          {
-            id: '2',
-            type: 'Crime Prediction',
-            description: 'Hotspot analysis for downtown area',
-            timestamp: new Date(Date.now() - 3600000).toISOString(),
-            result: 'High risk area identified',
-            status: 'completed'
-          }
-        ]
-      };
-      setDashboardStats(mockStats);
-
-      // Try to load models info for additional context (optional)
+      // Try to load models info (fallback for statistics)
       try {
-<<<<<<< HEAD
-        const modelsResponse = await axios.get(`${API_BASE_URL}/${API_ENDPOINTS.models}`, {
-=======
         const modelsUrl = `${API_BASE_URL}/${API_ENDPOINTS.models}`;
         console.log('🔍 Making models request to:', modelsUrl);
         
         const modelsResponse = await axios.get(modelsUrl, {
->>>>>>> 7a3bc71fb85c8b545f72b6a42cfc4684f03e617b
           headers: {
             'Content-Type': 'application/json',
           },
           timeout: 10000,
         });
-<<<<<<< HEAD
-        console.log('Models info loaded:', modelsResponse.data);
-        // Update mock stats with actual model count if available
-        if (modelsResponse.data && modelsResponse.data.models_loaded) {
-          mockStats.crime_analytics.models_active = Object.values(modelsResponse.data.models_loaded).filter(Boolean).length;
-          setDashboardStats({...mockStats});
-        }
-      } catch (modelsError) {
-        console.warn('Models endpoint not available (expected during loading):', modelsError);
-        // This is expected while models are loading, use fallback data
-=======
         
         console.log('✅ Models response received:', modelsResponse.data);
         
@@ -179,7 +187,7 @@ const SimpleDashboard: React.FC = () => {
           const statsUrl = `${API_BASE_URL}/dashboard/stats`; // Assuming you have this endpoint
           console.log('🔍 Attempting to get dashboard stats from:', statsUrl);
           
-          const statsResponse = await axios.get(statsUrl, {
+          const statsResponse = await axios.get<DashboardStats>(statsUrl, {
             headers: {
               'Content-Type': 'application/json',
             },
@@ -193,43 +201,7 @@ const SimpleDashboard: React.FC = () => {
           console.warn('❌ Dashboard stats endpoint not available, trying alternative...');
           
           // If no dashboard endpoint, create realistic mock from actual health data
-          const mockStats: DashboardStats = {
-            crime_analytics: {
-              total_cases_analyzed: 1247,
-              accuracy_rate: 94.2,
-              models_active: Object.values(healthResponse.data.models_loaded || {}).filter(Boolean).length,
-              prediction_confidence: 87.5,
-              hotspots_identified: 23,
-              network_nodes: 156,
-              temporal_patterns: 8
-            },
-            forensic_analysis: {
-              bloodsplatter_cases: 89,
-              cartridge_cases: 134,
-              handwriting_samples: 67,
-              total_evidence_processed: 290,
-              match_rate: 82.1,
-              average_processing_time: 3.4
-            },
-            recent_activity: [
-              {
-                id: '1',
-                type: 'Blood Analysis',
-                description: 'Pattern analysis completed',
-                timestamp: new Date().toISOString(),
-                result: 'Match found',
-                status: 'completed'
-              },
-              {
-                id: '2',
-                type: 'Crime Prediction',
-                description: 'Hotspot analysis for downtown area',
-                timestamp: new Date(Date.now() - 3600000).toISOString(),
-                result: 'High risk area identified',
-                status: 'completed'
-              }
-            ]
-          };
+          const mockStats = createMockStats(healthResponse.data);
           console.log('📊 Using mock stats with real health data:', mockStats);
           setDashboardStats(mockStats);
         }
@@ -238,71 +210,37 @@ const SimpleDashboard: React.FC = () => {
         console.error('❌ Models endpoint failed:', modelsError);
         
         // Even if everything fails, don't leave dashboardStats as null
-        const fallbackStats: DashboardStats = {
-          crime_analytics: {
-            total_cases_analyzed: 0,
-            accuracy_rate: 0,
-            models_active: 0,
-            prediction_confidence: 0,
-            hotspots_identified: 0,
-            network_nodes: 0,
-            temporal_patterns: 0
-          },
-          forensic_analysis: {
-            bloodsplatter_cases: 0,
-            cartridge_cases: 0,
-            handwriting_samples: 0,
-            total_evidence_processed: 0,
-            match_rate: 0,
-            average_processing_time: 0
-          },
-          recent_activity: []
-        };
+        const fallbackStats = createFallbackStats();
         console.log('📊 Using minimal fallback stats:', fallbackStats);
         setDashboardStats(fallbackStats);
->>>>>>> 7a3bc71fb85c8b545f72b6a42cfc4684f03e617b
       }
 
       setLastRefresh(new Date());
-    } catch (err: any) {
+    } catch (err) {
       console.error('💥 Complete API failure:', err);
+      
+      // Type-safe error handling
+      const axiosError = err as AxiosError<ApiError>;
       console.error('Error details:', {
-        message: err.message,
-        response: err.response?.data,
-        status: err.response?.status,
-        config: err.config
+        message: axiosError.message,
+        response: axiosError.response?.data,
+        status: axiosError.response?.status,
+        config: axiosError.config
       });
       
-      const errorMessage = err.response?.data?.message || err.message || 'Unknown error';
+      const errorMessage = axiosError.response?.data?.message || 
+                          axiosError.message || 
+                          'Unknown error';
       setError(`Failed to connect to analysis services: ${errorMessage}. Check console for details.`);
       
       // CRITICAL: Even on complete failure, set empty data to prevent crashes
-      setDashboardStats({
-        crime_analytics: {
-          total_cases_analyzed: 0,
-          accuracy_rate: 0,
-          models_active: 0,
-          prediction_confidence: 0,
-          hotspots_identified: 0,
-          network_nodes: 0,
-          temporal_patterns: 0
-        },
-        forensic_analysis: {
-          bloodsplatter_cases: 0,
-          cartridge_cases: 0,
-          handwriting_samples: 0,
-          total_evidence_processed: 0,
-          match_rate: 0,
-          average_processing_time: 0
-        },
-        recent_activity: []
-      });
+      setDashboardStats(createFallbackStats());
     } finally {
       setLoading(false);
     }
   };
 
-  const getStatusColor = (status: string) => {
+  const getStatusColor = (status: string): 'success' | 'warning' | 'error' | 'info' => {
     switch (status.toLowerCase()) {
       case 'operational':
       case 'healthy':
@@ -317,7 +255,7 @@ const SimpleDashboard: React.FC = () => {
     }
   };
 
-  const getStatusIcon = (status: string) => {
+  const getStatusIcon = (status: string): JSX.Element => {
     switch (status.toLowerCase()) {
       case 'operational':
       case 'healthy':
@@ -330,11 +268,11 @@ const SimpleDashboard: React.FC = () => {
     }
   };
 
-  const formatNumber = (num: number) => {
+  const formatNumber = (num: number): string => {
     return new Intl.NumberFormat().format(num);
   };
 
-  const formatPercentage = (num: number) => {
+  const formatPercentage = (num: number): string => {
     return `${num.toFixed(1)}%`;
   };
 
@@ -440,11 +378,11 @@ const SimpleDashboard: React.FC = () => {
           <CardContent sx={{ color: 'white', textAlign: 'center' }}>
             <TrendingUpIcon sx={{ fontSize: 40, mb: 1 }} />
             <Typography variant="h4">
-              {formatNumber(dashboardStats?.crime_analytics?.total_cases_analyzed || 0)}
+              {formatNumber(dashboardStats.crime_analytics.total_cases_analyzed)}
             </Typography>
             <Typography variant="body2">Cases Analyzed</Typography>
             <Typography variant="caption">
-              {formatPercentage(dashboardStats?.crime_analytics?.accuracy_rate || 0)} accuracy
+              {formatPercentage(dashboardStats.crime_analytics.accuracy_rate)} accuracy
             </Typography>
           </CardContent>
         </Card>
@@ -453,11 +391,11 @@ const SimpleDashboard: React.FC = () => {
           <CardContent sx={{ color: 'white', textAlign: 'center' }}>
             <ScienceIcon sx={{ fontSize: 40, mb: 1 }} />
             <Typography variant="h4">
-              {formatNumber(dashboardStats?.forensic_analysis?.total_evidence_processed || 0)}
+              {formatNumber(dashboardStats.forensic_analysis.total_evidence_processed)}
             </Typography>
             <Typography variant="body2">Evidence Processed</Typography>
             <Typography variant="caption">
-              {formatPercentage(dashboardStats?.forensic_analysis?.match_rate || 0)} match rate
+              {formatPercentage(dashboardStats.forensic_analysis.match_rate)} match rate
             </Typography>
           </CardContent>
         </Card>
@@ -465,11 +403,11 @@ const SimpleDashboard: React.FC = () => {
         <Card sx={{ minWidth: 200, background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)' }}>
           <CardContent sx={{ color: 'white', textAlign: 'center' }}>
             <Typography variant="h4">
-              {dashboardStats?.crime_analytics?.hotspots_identified || 0}
+              {dashboardStats.crime_analytics.hotspots_identified}
             </Typography>
             <Typography variant="body2">Crime Hotspots</Typography>
             <Typography variant="caption">
-              {dashboardStats?.crime_analytics?.network_nodes || 0} network nodes
+              {dashboardStats.crime_analytics.network_nodes} network nodes
             </Typography>
           </CardContent>
         </Card>
@@ -477,11 +415,11 @@ const SimpleDashboard: React.FC = () => {
         <Card sx={{ minWidth: 200, background: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)' }}>
           <CardContent sx={{ color: 'white', textAlign: 'center' }}>
             <Typography variant="h4">
-              {dashboardStats?.crime_analytics?.models_active || 0}
+              {dashboardStats.crime_analytics.models_active}
             </Typography>
             <Typography variant="body2">Active Models</Typography>
             <Typography variant="caption">
-              {formatPercentage(dashboardStats?.crime_analytics?.prediction_confidence || 0)} confidence
+              {formatPercentage(dashboardStats.crime_analytics.prediction_confidence)} confidence
             </Typography>
           </CardContent>
         </Card>
@@ -527,7 +465,7 @@ const SimpleDashboard: React.FC = () => {
             </Box>
 
             <Typography variant="caption" color="text.secondary">
-              Based on {formatNumber(dashboardStats?.crime_analytics?.total_cases_analyzed || 0)} analyzed cases
+              Based on {formatNumber(dashboardStats.crime_analytics.total_cases_analyzed)} analyzed cases
             </Typography>
           </CardContent>
         </Card>
@@ -553,19 +491,19 @@ const SimpleDashboard: React.FC = () => {
             <Box sx={{ display: 'flex', gap: 2 }}>
               <Box textAlign="center">
                 <Typography variant="h6" color="secondary.main">
-                  {dashboardStats?.forensic_analysis?.bloodsplatter_cases || 0}
+                  {dashboardStats.forensic_analysis.bloodsplatter_cases}
                 </Typography>
                 <Typography variant="caption">Blood</Typography>
               </Box>
               <Box textAlign="center">
                 <Typography variant="h6" color="secondary.main">
-                  {dashboardStats?.forensic_analysis?.cartridge_cases || 0}
+                  {dashboardStats.forensic_analysis.cartridge_cases}
                 </Typography>
                 <Typography variant="caption">Cartridge</Typography>
               </Box>
               <Box textAlign="center">
                 <Typography variant="h6" color="secondary.main">
-                  {dashboardStats?.forensic_analysis?.handwriting_samples || 0}
+                  {dashboardStats.forensic_analysis.handwriting_samples}
                 </Typography>
                 <Typography variant="caption">Handwriting</Typography>
               </Box>
